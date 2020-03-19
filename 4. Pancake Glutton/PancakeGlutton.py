@@ -42,7 +42,7 @@ for i in range(numEaters):
 	innerlist.append(random.randint(1,10))#originaly had str(random.randint(), but list dont have to be string based.
 	outerlist.append(innerlist)#append to outerlist
 
-
+#python has list method sort() which will sort by smallest to largest, but not sure how to handle it with 2d arrays.
 for i in range(numEaters): #only have to bubblesort for the total people in array
 	swapped = False #to terminate loop early if bubblesort finishes before loop ends
 	for j in range (0, numEaters-1): #Traverse from 0-9 (10 total)

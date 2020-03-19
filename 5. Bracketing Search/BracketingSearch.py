@@ -37,7 +37,7 @@ elif (GameChoice == 2):
 			print("Enter 1 if I was too high, Or 2 if I was too low! and 3 if I guessed the number!")
 
 			highOrLow = int(input())
-			guessCounter =guessCounter+1
+			guessCounter =guessCounter+1 #Alternatively can use (guessCounter += 1)
 
 			if (highOrLow == 1):
 				maxGuess = compGuess
