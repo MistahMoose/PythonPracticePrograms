@@ -1,72 +1,111 @@
 
 
 #Creating the game board
-def PrintGameboard(Grid):#TODO: Print grid numbers and layou
-	print(' ' + Grid[0][0] + ' | ' + Grid[1][0] + ' | ' + Grid[2][0])
-	print(' ' + Grid[0][1] + ' | ' + Grid[1][1] + ' | ' + Grid[2][1])
-	print(' ' + Grid[0][2] + ' | ' + Grid[1][2] + ' | ' + Grid[2][2])
+def PrintGameboard(Grid):
+	print('  |' + '0' + ' | ' + '1' + ' | ' + '2')
+	print('0 |' + ' ' + Grid[0][0] + ' | ' + Grid[0][1] + ' | ' + Grid[0][2])
+	print('1 |' + ' ' + Grid[1][0] + ' | ' + Grid[1][1] + ' | ' + Grid[1][2])
+	print('2 |' + ' ' + Grid[2][0] + ' | ' + Grid[2][1] + ' | ' + Grid[2][2])
 
-#Function for the AI's turn TODO: Create AI actions, Place tokens in logical way / Prevent player from winning
-def ComputerMove():
+def PlayerMove(Grid,PlayerToken):  #Asks player for move, Checks space isn't already occupied
+		print('Player ' + PlayerToken + " Please make your move! \n \nEnter the Row of your move: ")
+		PlayerMoveRow = int(input())
+		print('Player ' + PlayerToken + " Enter the Column of your move: ")
+		PlayerMoveColumn = int(input())
 
-	print('something heere')
+		while(Grid[PlayerMoveRow][PlayerMoveColumn] != '_'):#Check if space is free
+			print('This space is already occupied! Please re-enter your move!')
+			print('Player ' + PlayerToken + " Please make your move! \n \nEnter the Row of your move: ")
+			PlayerMoveRow = int(input())
+			print('Player ' + PlayerToken + " Enter the Column of your move: ")
+			PlayerMoveColumn = int(input())
 
+		Grid[PlayerMoveRow][PlayerMoveColumn] = PlayerToken
+
+
+		
 
 #Compares players move to grid to check if they won.
 def CheckForWin(Grid, PlayerToken):
 
-	print('put list of win conditions')
+	print('Checking for win..')
 	#python prints columns then rows, Unlike C++ Which is rows then columns.
-	if(Grid[0][0] == PlayerToken and Grid[1][0] == PlayerToken and Grid[2][0] == PlayerToken):#top cross
-		print('something here')
-	elif(Grid[0][1] == PlayerToken and Grid[1][1] == PlayerToken and Grid[2][1] == PlayerToken):#middle cross
-		print('something here')
-	elif(Grid[0][2] == PlayerToken and Grid[1][2] == PlayerToken and Grid[2][2] == PlayerToken):#Bottom cross
-		print('something here')
-	elif(Grid[0][0] == PlayerToken and Grid[0][1] == PlayerToken and Grid[0][2] == PlayerToken):#First column
-		print('something here')
-	elif(Grid[1][0] == PlayerToken and Grid[1][1] == PlayerToken and Grid[1][2] == PlayerToken):#second column
-		print('something here')
-	elif(Grid[2][0] == PlayerToken and Grid[2][1] == PlayerToken and Grid[2][2] == PlayerToken):#Third column
-		print('something here')
+	if(Grid[0][0] == PlayerToken and Grid[1][0] == PlayerToken and Grid[2][0] == PlayerToken):#First column
+		print('Player '+ PlayerToken + ' Wins!')
+		return True
+	elif(Grid[0][1] == PlayerToken and Grid[1][1] == PlayerToken and Grid[2][1] == PlayerToken):#Second Column
+		print('Player '+ PlayerToken + ' Wins!')
+		return True
+	elif(Grid[0][2] == PlayerToken and Grid[1][2] == PlayerToken and Grid[2][2] == PlayerToken):#Third Column
+		print('Player '+ PlayerToken + ' Wins!')
+		return True
+	elif(Grid[0][0] == PlayerToken and Grid[0][1] == PlayerToken and Grid[0][2] == PlayerToken):#Top Row
+		print('Player '+ PlayerToken + ' Wins!')
+		return True
+	elif(Grid[1][0] == PlayerToken and Grid[1][1] == PlayerToken and Grid[1][2] == PlayerToken):#Middle Row
+		print('Player '+ PlayerToken + ' Wins!')
+		return True
+	elif(Grid[2][0] == PlayerToken and Grid[2][1] == PlayerToken and Grid[2][2] == PlayerToken):#Bottom Row
+		print('Player '+ PlayerToken + ' Wins!')
+		return True
 	elif(Grid[0][0] == PlayerToken and Grid[1][1] == PlayerToken and Grid[2][2] == PlayerToken):#Diagonal top left to bottom right
-		print('something here')
+		print('Player '+ PlayerToken + ' Wins!')
+		return True
 	elif(Grid[2][0] == PlayerToken and Grid[1][1] == PlayerToken and Grid[0][2] == PlayerToken):#diagonal top right to bottom left
-		print('something here')
+		print('Player '+ PlayerToken + ' Wins!')
+		return True
+	
+
+	for i in range(len(Grid)):
+		for j in range(len(Grid[i])):
+			if Grid[i][j] == '_':
+				return False
+	return True
+
+
+
 #Runs the game for Player vs player, input done manually.
-def GameMode_Player_Vs_Player():
-	print('Begin!')
-	print('Player 1 makes the first move! \n Please enter the grid location you would like to place a token!')
+def GameMode_Player_Vs_Player(Grid):
+	print('Begin!\n')
+	print('Player 1 makes the first move! \nPlease enter the grid location you would like to place a token! \n')
+	PrintGameboard(Grid)
+	Turns = 0 #iterator
+	PlayerX = 'X'
+	PlayerO = "O"
+	PlayerToken = PlayerX
+	GameOver = False
+	while(Turns < 10):
 
-	UserInput = input()
+		PlayerMove(Grid, PlayerToken)
 
-	#Execute turns and moves, print gameboard at beginning of each turn
-	#
+		GameOver = CheckForWin(Grid, PlayerToken)
+		PrintGameboard(Grid)
+		if(GameOver == True ):
+			break
+		elif(PlayerToken == PlayerX):#At end of turn change token to other player
+			PlayerToken = PlayerO
+		elif(PlayerToken == PlayerO):
+			PlayerToken = PlayerX
 
 
 #Initialize the board
 Grid = [['_']*3 for Tiles in(range(3))] #This method creates a new object per loop 
 # Grid = [['_']*3]*3 <-This method copies the grid by reference
 
-Grid[2][0] = 'x'
-Grid[1][1] = 'x'
-Grid[0][2] = 'x'
-PrintGameboard(Grid)
 
 
-print('Welcome to TicTacToe! \n To play versus another player, Enter 1. \n To play versus a computer, Enter 2.')
+print('Welcome to TicTacToe! \n To play versus another player, Enter 1. \n To exit Enter 3.')
 
 UserInput = int(input())
+print('\n')
 
 if(UserInput == 1):
 	#begin play
-	print("You've chosen to play against another player! Player 1 will be X, Player 2 Will be O!")
-elif(UserInput == 2):
-	#begin computer play
-	print('something heere')
+	print("You've chosen to play against another player! Player 1 will be X, Player 2 Will be O! \n")
+	GameMode_Player_Vs_Player(Grid)
 elif(UserInput == 3):
 	#Exit program
-	print('something heere')
+	print('Exiting..')
 else:
 	print("I'm sorry, that isn't an option. \n To play versus another player, Enter 1. \n To play versus a computer, Enter 2.")
 
