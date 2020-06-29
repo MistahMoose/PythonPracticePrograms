@@ -47,7 +47,22 @@ async def on_message(message):#Listens to messages in all channels/chats
     if message.content == 'Are you pooping?':
         response = 'Always.'
         await message.channel.send(response)
-    
+    elif message.content == 'raise-exception':
+        raise discord.DiscordException
+
+
+@client.event
+async def on_error(event, *args, **kwargs):
+    with open('err.log', 'a') as f:
+        if event == 'on_message':
+            f.write(f'Unhandled message: {args[0]}\n')
+        else:
+            raise
+
+
+
+#End of MooseBot Practice, Will be creating new file to change everything over to bot
+#Bot is subset of client, May be easier to work with.
 
 
 client.run(TOKEN)#Runs client using discord token
